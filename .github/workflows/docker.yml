@@ -3,7 +3,31 @@ name: node:14-alpine
 on:
   push:
     branches:
+      - mastername: FROM --platform=$BUILD_ARG_ARCH 
+
+node:14-alpine
+
+on:
+  push:
+    branches:
       - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, arm64, arm]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build and push image
+        uses: docker/build-push-action@v1
+        with:
+          username: USERNAME
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: REPOSITORY_NAME
+          tags: latest
+          build-arg: BUILD_ARG_ARCH=${arch}
 
 jobs:
   build:
