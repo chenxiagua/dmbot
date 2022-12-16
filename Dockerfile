@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM mhart/alpine-node:slim-14
 
 # Prepare package registry
 RUN npm config set registry http://mirrors.cloud.tencent.com/npm/
