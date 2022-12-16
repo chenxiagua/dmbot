@@ -1,5 +1,4 @@
 name: FROM --platform=$BUILD_ARG_ARCH node:14-alpine
-
 on:
   push:
     branches:
