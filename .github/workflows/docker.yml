@@ -1,4 +1,4 @@
- name: FROM --platform=$BUILD_ARG_ARCH node:14-alpine
+name: Build and push
 
 on:
   push:
@@ -8,16 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        arch: [amd64, arm64, arm]
     steps:
-      - uses: actions/checkout@v2
-      - name: Build and push image
-        uses: docker/build-push-action@v1
-        with:
-          username: USERNAME
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: REPOSITORY_NAME
-          tags: latest
-          build-arg: BUILD_ARG_ARCH=${arch}
+    - uses: actions/checkout@v1
+    - name: Build and push image
+      run: |
+        docker build -t my-image .
+        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        docker tag my-image "$DOCKER_USERNAME/my-image:latest"
+        docker push "$DOCKER_USERNAME/my-image:latest"
